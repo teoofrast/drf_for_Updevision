@@ -1,4 +1,5 @@
 import requests
+import logging
 
 from rest_framework import generics, permissions, status
 from rest_framework.generics import GenericAPIView
@@ -8,6 +9,10 @@ from django.contrib.auth import authenticate, login
 from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
 from .models import CustomUser
 from .serializers import UserSerializer, LoginSerializer
+
+
+logger = logging.getLogger(__name__)
+
 
 class SignupView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
@@ -92,15 +97,18 @@ class LogoutView(GenericAPIView):
     @staticmethod
     def post(request):
         if request.data['all'] == 'true':
+            logger.info(f"User {request.data.get('id')} requested logout of all devices.")
             tokens = OutstandingToken.objects.filter(user_id=request.data['id'])
             for token in tokens:
                 t, _ = BlacklistedToken.objects.get_or_create(token=token)
             return Response({'message': 'Logout successful'}, status=status.HTTP_205_RESET_CONTENT)
 
         elif request.data['all'] == 'false':
+            logger.info(f"User {request.data.get('id')} requested logout of current device.")
             tokens = OutstandingToken.objects.filter(user_id=request.data['id'])
             BlacklistedToken.objects.get_or_create(token=tokens[0])
             return Response({'message': 'Logout successful'}, status=status.HTTP_205_RESET_CONTENT)
 
         else:
+            logger.warning("Parameter 'all' is missing in logout request.")
             return Response({'message': 'Forbidden'}, status=status.HTTP_403_FORBIDDEN)

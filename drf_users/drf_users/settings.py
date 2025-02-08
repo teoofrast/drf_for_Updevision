@@ -33,6 +33,28 @@ ALLOWED_HOSTS = [
 ]
 
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {  # Вывод в консоль
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {  # Корневой логгер (для всех приложений)
+            'handlers': ['console'],  # Используем обработчик 'console'
+            'level': 'INFO',  # Уровень логирования по умолчанию
+            'propagate': True,
+        },
+        'accounts.views': { # Логгер для конкретного модуля (опционально)
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False, # Предотвращаем дублирование логов
+        },
+    },
+}
+
 # Application definition
 
 INSTALLED_APPS = [
