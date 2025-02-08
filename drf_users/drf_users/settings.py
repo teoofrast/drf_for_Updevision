@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'drf-for-updevision.onrender.com',
+    '127.0.0.1',
+    'localhost',
+    '0.0.0.0',
 ]
 
 
