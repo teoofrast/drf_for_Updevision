@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-ugsljm424vou*u3zt!64#z^*a8n_+y0j820=l^_@rh=o5dgw(v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'drf-for-updevision.onrender.com',
+]
 
 
 # Application definition
@@ -140,4 +142,3 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
-
